@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Christmas Surprise for Prapti 🎄❤️</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset and Full Screen Setup */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    
+    html, body { 
+      width:100%; 
+      height:100%; 
+      overflow:hidden; 
+      font-family: 'Dancing Script', cursive; 
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      /* Soft pink background from your photo */
+      background-color: #f7dadd; 
+      color: #800000;
+      position: relative;
+    }
+
+    /* The White Card Container */
+    .container {
+      width: 90%;
+      max-width: 320px; /* Narrow card style like the image */
+      padding: 40px 25px;
+      text-align: center;
+      background: #ffffff;
+      border-radius: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      display: none; /* Hidden by default */
+      flex-direction: column;
+      align-items: center;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .container.active { 
+      display: flex; 
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1, h2 { 
+      font-size: 32px; 
+      margin-bottom: 15px;
+      line-height: 1.2;
+    }
+
+    p {
+      font-size: 20px;
+      margin-bottom: 25px;
+      color: #555;
+    }
+
+    /* The Red Button */
+    button {
+      background-color: #e91e63; /* Matching the pinkish-red button */
+      color: white;
+      border: none;
+      padding: 12px 40px;
+      font-size: 20px;
+      font-family: 'Dancing Script', cursive;
+      font-weight: bold;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.3s;
+      width: 80%;
+    }
+
+    button:hover { 
+      transform: scale(1.05); 
+      background-color: #d81b60; 
+    }
+
+    #surprise {
+      position: absolute;
+      top: 20%;
+      font-size: 24px;
+      color: #ff1a75;
+      font-weight: bold;
+      text-align: center;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .effect { position: absolute; pointer-events: none; z-index: 999; }
+
+    audio { display: none; }
+  </style>
+</head>
+<body>
+
+  <audio id="bgMusic" loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="container active" id="page1">
+    <h1>🎄 Merry Christmas, Prapti! 🎄</h1>
+    <p>Click continue to answer some cute questions from your Ankit ❤️</p>
+    <button onclick="nextPage(1)">Continue</button>
+  </div>
+
+  <div class="container" id="page2">
+    <h2>Question 1 ❤️</h2>
+    <p>Kya tum jaanti ho Ankit kitna tumse pyaar karta hai?</p>
+    <button onclick="showSurprise('Yes! Ankit tumhe sooo zyada pyaar karta hai 🥰💖')">Yes</button>
+    <div style="height:10px"></div>
+    <button onclick="showSurprise('Nahi? Aww! Aur bhi zyada pyaar karta hoon 🥹🖤')">No</button>
+  </div>
+
+  <div class="container" id="page3">
+    <h2>Question 2 ❤️</h2>
+    <p>Kya tumhe mere saath time spend karna pasand hai?</p>
+    <button onclick="showSurprise('Yay! Mujhe bhi 🥹💞')">Yes</button>
+    <div style="height:10px"></div>
+    <button onclick="showSurprise('Don’t worry, mazaa aur double kar dunga 😘💖')">No</button>
+  </div>
+
+  <div class="container" id="page4">
+    <h2>Question 3 ❤️</h2>
+    <p>Kya tum jaanti ho ke tum meri life ki best cheez ho?</p>
+    <button onclick="showSurprise('Exactly! Tum meri world ho 🌎💖')">Yes</button>
+    <div style="height:10px"></div>
+    <button onclick="showSurprise('Roz yaad dilata rahunga 🥹❤️')">No</button>
+  </div>
+
+  <div class="container" id="endPage">
+    <h2>🥰 Surprise! ❤️</h2>
+    <p style="font-size: 18px;">Duniyaa ki sbse best feeling apke sath rehne me ati he🥹🖤</p>
+    <p style="font-size: 18px;">Babyy ap bolo ya na bolo.. Apse zada smjhdar or best ladki koi ni he😭😭🤌🏻</p>
+    <p>Muaaaaaaaaaah💋</p>
+    <p>Love u merii laaado! 🧿</p>
+  </div>
+
+  <div id="surprise"></div>
+
+  <script>
+    let currentPage = 1;
+    let pages = ["page1","page2","page3","page4","endPage"];
+    let music = document.getElementById("bgMusic");
+
+    function playMusic(){
+      music.volume = 0.3;
+      music.play().catch(()=>{});
+    }
+
+    function nextPage(pageIndex){
+      document.getElementById(pages[pageIndex-1]).classList.remove('active');
+      
+      if(pageIndex < pages.length){
+        let next = document.getElementById(pages[pageIndex]);
+        next.classList.add('active');
+        if(pages[pageIndex] === "endPage") createEffects();
+      }
+      playMusic();
+    }
+
+    function showSurprise(message){
+      const surprise = document.getElementById("surprise");
+      surprise.innerHTML = message;
+      surprise.style.opacity = 1;
+      createClickHearts();
+      setTimeout(()=>{
+        surprise.style.opacity = 0;
+        currentPage++;
+        nextPage(currentPage);
+      },2000);
+    }
+
+    function createEffects(){
+      createFalling("❄",30,10,15,25);
+      createFalling("✨",20,5,10,15);
+    }
+
+    function createFalling(char,count,durationMin,sizeMin,sizeMax){
+      for(let i=0; i<count; i++){
+        let el = document.createElement("div");
+        el.className = "effect";
+        el.innerHTML = char;
+        el.style.fontSize = (sizeMin + Math.random()*(sizeMax-sizeMin))+"px";
+        el.style.left = Math.random()*window.innerWidth+"px";
+        el.style.top = "-50px";
+        document.body.appendChild(el);
+        el.animate([{transform:"translateY(0)"},{transform:`translateY(${window.innerHeight+100}px)`}],{
+          duration: (durationMin + Math.random()*5)*1000,
+          iterations: Infinity
+        });
+      }
+    }
+
+    function createClickHearts(){
+      for(let i=0; i<8; i++){
+        let heart = document.createElement("div");
+        heart.className = "effect";
+        heart.innerHTML = "💖";
+        heart.style.left = (window.innerWidth/2 - 20 + Math.random()*40)+"px";
+        heart.style.top = (window.innerHeight/2 - 20 + Math.random()*40)+"px";
+        document.body.appendChild(heart);
+        heart.animate([
+          {transform:"scale(0.5)", opacity:1},
+          {transform:"scale(2) translateY(-100px)", opacity:0}
+        ],{ duration:1000 });
+        setTimeout(() => heart.remove(), 1000);
+      }
+    }
+  </script>
+</body>
+</html>
